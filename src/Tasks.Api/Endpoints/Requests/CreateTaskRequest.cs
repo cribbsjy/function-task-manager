@@ -4,8 +4,8 @@ namespace Tasks.Api.Endpoints.Requests;
 
 public record CreateTaskRequest
 {
-    public required string Title { get; set; }
-    public required string Description { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
 }
 
 public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>

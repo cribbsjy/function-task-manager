@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tasks.Api.Endpoints;
-using Tasks.Api.Endpoints.Requests;
+using Tasks.Api.Endpoints.Validation;
 using Tasks.Api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +41,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddValidatorsFromAssemblyContaining<CreateTaskRequestValidator>();
+builder.Services.AddScoped<IValidationInvoker, ValidationInvoker>()
+    .AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
 
 var app = builder.Build();
 

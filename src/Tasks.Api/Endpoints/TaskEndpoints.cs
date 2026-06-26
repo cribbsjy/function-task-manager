@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tasks.Api.Domain;
 using Tasks.Api.Endpoints.Requests;
+using Tasks.Api.Endpoints.Validation;
 using Tasks.Api.Repository;
 
 namespace Tasks.Api.Endpoints;
@@ -24,23 +26,17 @@ public static class TaskEndpoints
             .WithName(GetTasks);
 
         endpointsGroup.MapPost("/", async (
-            CreateTaskRequest request,
+            [FromBody][Validate] CreateTaskRequest request,
             IValidator<CreateTaskRequest> validator,
             TasksDbContext db,
             CancellationToken cancellationToken) =>
         {
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
-            {
-                return Results.ValidationProblem(validationResult.ToDictionary());
-            }
-
             var task = new TaskEntity
             {
                 Id = Guid.NewGuid(),
-                Title = request.Title.Trim(),
-                Description = request.Description.Trim(),
-                Status = Domain.TaskStatus.New,
+                Title = request.Title?.Trim(),
+                Description = request.Description?.Trim(),
+                Status = Status.New,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -54,25 +50,19 @@ public static class TaskEndpoints
 
         endpointsGroup.MapPut("/{id:guid}", async (
             Guid id,
-            UpdateTaskRequest request,
+            [FromBody][Validate] UpdateTaskRequest request,
             IValidator<UpdateTaskRequest> validator,
             TasksDbContext db,
             CancellationToken cancellationToken) =>
         {
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
-            {
-                return Results.ValidationProblem(validationResult.ToDictionary());
-            }
-
             var task = await db.Tasks.FindAsync(new object[] { id }, cancellationToken);
             if (task is null)
             {
                 return Results.NotFound(new { Message = $"Task with ID {id} not found." });
             }
 
-            task.Title = request.Title.Trim();
-            task.Description = request.Description.Trim();
+            task.Title = request.Title?.Trim();
+            task.Description = request.Description?.Trim();
             task.Status = request.Status;
             task.LastUpdatedAt = DateTimeOffset.UtcNow;
 
@@ -82,6 +72,8 @@ public static class TaskEndpoints
             .WithName("UpdateTask")
             .Produces<Ok>()
             .Produces<NotFound>();
+
+        endpointsGroup.AddEndpointFilterFactory(ValidationFilter.ValidationFilterFactory);
 
         return builder;
     }
