@@ -6,5 +6,9 @@
     <Build />
   </Project>
   <Project Path="src/Tasks.Api/Tasks.Api.csproj" />
+  <Project Path="src/Tasks.UI/tasks.ui.esproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="tests/TaskTests/TaskTests.csproj" Id="21badb76-3582-4cf8-9077-e8efa93fba3d" />
 </Solution>
