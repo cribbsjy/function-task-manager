@@ -9,6 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/tasks.db
+      - JwtSettings__Key=${JWT_SIGNING_KEY}
     volumes:
       - tasks-data:/app/data
 

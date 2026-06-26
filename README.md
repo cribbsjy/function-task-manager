@@ -6,7 +6,8 @@ A simple task management engine.
 
 ### Backend (Port 5001)
 1. Navigate to the solution root
-2. Run `docker compose up --build`
+1. Build the container `docker compose build --no-cache`
+2. Run the container `docker compose up`
 
 *Note: A persistent local SQLite database file (`tasks.db`) will automatically initialize and apply schema configurations in the project directory upon launch.*
 
@@ -24,15 +25,15 @@ A simple task management engine.
 
 ---
 
-## 3. Explicit Architecture Omissions (What was Left Out)
+## 3. Explicit Architecture Omissions
 
 * **Local Network Transport (HTTP vs. HTTPS):** The local Docker environment intentionally routes traffic over plain HTTP (`http://localhost:5001`).
-* **Identity Management:** Fully integrated third-party identity authentication was omitted to focus on structural validation and end-to-end functionality within the timeframe. User context tracking relies on structural request identification.
+* **Identity Management:** Fully integrated third-party identity authentication was omitted to focus on structural validation and end-to-end functionality within the timeframe.
 * **Elaborate Architecture Layers (CQRS/MediatR/Repositories):** This application utilizes a single API project structure where Minimal API endpoints route straight into the Entity Framework database context. Splitting this into multiple abstraction projects for four endpoints would represent a misalignment of architectural complexity to the scope of this request.
 
 ---
 
-## 4. Engineering Backlog (What I would do with another day)
+## 4. Engineering Backlog
 
 1. **Transactional Domain Events:** Implement an outbox table within the SQLite database to capture state changes, preparing the app to dispatch events asynchronously to an external system.
 2. **Optimistic Concurrency Resolution:** Add a version row index to the task table to ensure web application changes gracefully catch and warn users if two browser windows modify an entity simultaneously.
