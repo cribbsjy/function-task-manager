@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Tasks.Api.Auth;
 
 namespace Tasks.Api.Repository;
 
@@ -18,6 +19,13 @@ public class TasksDbContextFactory : IDesignTimeDbContextFactory<TasksDbContext>
         // Provide a simple local path so the migration generator can compile safely
         optionsBuilder.UseSqlite("Data Source=design_time_fallback.db");
 
-        return new TasksDbContext(optionsBuilder.Options);
+        var designTimeUserContext = new DesignTimeUserContext();
+
+        return new TasksDbContext(optionsBuilder.Options, designTimeUserContext);
     }
+}
+internal class DesignTimeUserContext : ICurrentUserContext
+{
+    public string UserId => "design-time-system-user";
+    public bool IsAuthenticated => false;
 }

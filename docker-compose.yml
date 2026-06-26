@@ -9,7 +9,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/tasks.db
-      #- JwtSettings__Key=${JWT_SIGNING_KEY}
+      - JwtSettings__Secret=SuperSecretTestingKeyEnsureItIsLongEnough32Bytes!
+      - JwtSettings__Issuer=TasksApi
+      - JwtSettings__Audience=TasksUi
     volumes:
       - ./data:/app/data
 

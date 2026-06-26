@@ -95,7 +95,8 @@ public static class TaskEndpoints
             .Produces<NoContent>()
             .Produces<NotFound>();
 
-        endpointsGroup.AddEndpointFilterFactory(ValidationFilter.ValidationFilterFactory);
+        endpointsGroup.AddEndpointFilterFactory(ValidationFilter.ValidationFilterFactory)
+            .RequireAuthorization();
 
         return builder;
     }
