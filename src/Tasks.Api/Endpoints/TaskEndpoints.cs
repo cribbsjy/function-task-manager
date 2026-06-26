@@ -39,6 +39,7 @@ public static class TaskEndpoints
                 Title = request.Title?.Trim(),
                 Description = request.Description?.Trim(),
                 Status = Status.New,
+                DueDate = request.DueDate,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -67,6 +68,7 @@ public static class TaskEndpoints
             task.Description = request.Description?.Trim();
             task.Status = request.Status;
             task.LastUpdatedAt = DateTimeOffset.UtcNow;
+            task.DueDate = request.DueDate;
 
             await db.SaveChangesAsync(cancellationToken);
             return Results.Ok();

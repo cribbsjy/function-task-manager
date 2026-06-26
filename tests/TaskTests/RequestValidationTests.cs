@@ -1,4 +1,5 @@
-﻿using FluentValidation.TestHelper;
+﻿using Bogus;
+using FluentValidation.TestHelper;
 using Tasks.Api.Domain;
 using Tasks.Api.Endpoints.Requests;
 
@@ -8,6 +9,8 @@ public class TaskValidatorTests
 {
     private readonly CreateTaskRequestValidator _createValidator;
     private readonly UpdateTaskRequestValidator _updateValidator;
+
+    private readonly Faker _faker = new();
 
     public TaskValidatorTests()
     {
@@ -19,7 +22,12 @@ public class TaskValidatorTests
     public void CreateValidator_ShouldPass_WhenPayloadIsValid()
     {
         // Arrange
-        var request = new CreateTaskRequest { Title = "Finish Homework", Description = "Complete calculus assignment." };
+        var request = new CreateTaskRequest
+        {
+            Title = "Finish Homework",
+            Description = "Complete calculus assignment.",
+            DueDate = _faker.Date.FutureDateOnly()
+        };
 
         // Act
         var result = _createValidator.TestValidate(request);
@@ -66,7 +74,8 @@ public class TaskValidatorTests
         {
             Title = "Valid Title",
             Description = "Valid description",
-            Status = (Status)999 // Out-of-bounds enum value
+            Status = (Status)999, // Out-of-bounds enum value
+            DueDate = _faker.Date.FutureDateOnly()
         };
 
         // Act
@@ -74,5 +83,24 @@ public class TaskValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(t => t.Status);
+    }
+
+    [Fact]
+    public void UpdateValidator_ShouldFail_WhenDueDateInPast()
+    {
+        // Arrange
+        var request = new UpdateTaskRequest
+        {
+            Title = "Valid Title",
+            Description = "Valid description",
+            Status = (Status)1,
+            DueDate = _faker.Date.PastDateOnly()
+        };
+
+        // Act
+        var result = _updateValidator.TestValidate(request);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(t => t.DueDate);
     }
 }

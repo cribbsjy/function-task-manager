@@ -7,6 +7,7 @@ public record TaskEntity
     public string? Title { get; set; }
     public string? Description { get; set; }
     public Status Status { get; set; }
+    public DateOnly? DueDate { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? LastUpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

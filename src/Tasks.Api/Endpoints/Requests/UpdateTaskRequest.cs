@@ -8,6 +8,7 @@ public record UpdateTaskRequest
     public string? Title { get; init; }
     public string? Description { get; init; }
     public Status Status { get; init; }
+    public DateOnly? DueDate { get; set; }
 }
 
 public class UpdateTaskRequestValidator : AbstractValidator<UpdateTaskRequest>
@@ -26,5 +27,10 @@ public class UpdateTaskRequestValidator : AbstractValidator<UpdateTaskRequest>
             .IsInEnum()
             .NotEqual(Status.Unknown)
             .WithMessage("Please select a valid status (New, InProgress, or Completed).");
+
+        RuleFor(x => x.DueDate)
+            .NotEmpty().WithMessage("Due Date is required.")
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow))
+            .WithMessage("The due date cannot be in the past.");
     }
 }

@@ -11,8 +11,8 @@ using Tasks.Api.Repository;
 namespace Tasks.Api.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    [Migration("20260626205613_AddUserIdToTasks")]
-    partial class AddUserIdToTasks
+    [Migration("20260626221624_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace Tasks.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("DueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("LastUpdatedAt")

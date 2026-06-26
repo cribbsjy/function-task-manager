@@ -16,9 +16,11 @@ namespace Tasks.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     LastUpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     DeletedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)

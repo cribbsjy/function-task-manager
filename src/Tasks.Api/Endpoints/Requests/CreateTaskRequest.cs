@@ -6,6 +6,7 @@ public record CreateTaskRequest
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
+    public DateOnly? DueDate { get; set; }
 }
 
 public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
@@ -19,5 +20,10 @@ public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required.")
             .MaximumLength(500).WithMessage("Description must not exceed 500 characters.");
+
+        RuleFor(x => x.DueDate)
+            .NotEmpty().WithMessage("Due Date is required.")
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow))
+            .WithMessage("The due date cannot be in the past.");
     }
 }

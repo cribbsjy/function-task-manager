@@ -32,6 +32,9 @@ namespace Tasks.Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateOnly?>("DueDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTimeOffset?>("LastUpdatedAt")
                         .HasColumnType("TEXT");
 
