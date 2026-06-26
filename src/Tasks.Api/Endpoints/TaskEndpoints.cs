@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Tasks.Api.Domain;
 using Tasks.Api.Endpoints.Requests;
@@ -48,7 +49,39 @@ public static class TaskEndpoints
 
             return Results.Created($"/tasks/{task.Id}", task);
         })
-            .WithName(CreateTask);
+            .WithName(CreateTask)
+            .Produces<Created>();
+
+        endpointsGroup.MapPut("/{id:guid}", async (
+            Guid id,
+            UpdateTaskRequest request,
+            IValidator<UpdateTaskRequest> validator,
+            TasksDbContext db,
+            CancellationToken cancellationToken) =>
+        {
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return Results.ValidationProblem(validationResult.ToDictionary());
+            }
+
+            var task = await db.Tasks.FindAsync(new object[] { id }, cancellationToken);
+            if (task is null)
+            {
+                return Results.NotFound(new { Message = $"Task with ID {id} not found." });
+            }
+
+            task.Title = request.Title.Trim();
+            task.Description = request.Description.Trim();
+            task.Status = request.Status;
+            task.LastUpdatedAt = DateTimeOffset.UtcNow;
+
+            await db.SaveChangesAsync(cancellationToken);
+            return Results.NoContent();
+        })
+            .WithName("UpdateTask")
+            .Produces<Ok>()
+            .Produces<NotFound>();
 
         return builder;
     }

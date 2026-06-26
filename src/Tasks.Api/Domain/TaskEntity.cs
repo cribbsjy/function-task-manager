@@ -2,12 +2,17 @@
 
 public record TaskEntity
 {
-    public Guid? Id { get; init; }
-    public string? Title { get; init; }
-    public string? Description { get; init; }
-    public TaskStatus Status{ get; init; }
+    public Guid? Id { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public TaskStatus Status { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset DeletedAt { get; set; }
+    public DateTimeOffset? LastUpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
+
+    // Calculated helper values
+    public bool IsCompleted => Status == TaskStatus.Completed;
+    public bool IsDeleted => DeletedAt is not null;
 }
 
 public enum TaskStatus

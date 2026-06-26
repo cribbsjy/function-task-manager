@@ -6,8 +6,8 @@ using Tasks.Api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var jwtKey = builder.Configuration["JwtSettings:Key"]
-             ?? throw new InvalidOperationException("JWT Signing Key is missing from configuration.");
+//var jwtKey = builder.Configuration["JwtSettings:Key"]
+//             ?? throw new InvalidOperationException("JWT Signing Key is missing from configuration.");
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddJwtBearer(options =>
@@ -23,7 +23,7 @@ var jwtKey = builder.Configuration["JwtSettings:Key"]
 //    });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                       ?? "Data Source=/app/data/tasks.db";
+                       ?? "Data Source=tasks.db";
 
 builder.Services.AddDbContext<TasksDbContext>(options =>
     options.UseSqlite(connectionString));
@@ -59,7 +59,7 @@ app.UseCors();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<TasksDbContext>();
-    dbContext.Database.EnsureCreated();
+    await dbContext.Database.MigrateAsync();
 }
 
 app.Run();

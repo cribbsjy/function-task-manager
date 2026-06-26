@@ -2,15 +2,16 @@
 
 namespace Tasks.Api.Endpoints.Requests;
 
-public record CreateTaskRequest
+public record UpdateTaskRequest
 {
-    public required string Title { get; set; }
-    public required string Description { get; set; }
+    public required string Title { get; init; }
+    public required string Description { get; init; }
+    public required Domain.TaskStatus Status { get; init; }
 }
 
-public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
+public class UpdateTaskRequestValidator : AbstractValidator<UpdateTaskRequest>
 {
-    public CreateTaskRequestValidator()
+    public UpdateTaskRequestValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Title is required.")

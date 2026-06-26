@@ -1,6 +1,6 @@
 services:
-  tasks.api:
-    image: ${DOCKER_REGISTRY-}tasksapi
+  tasks-api:
+    image: tasks-api:latest
     build:
       context: .
       dockerfile: ./src/Tasks.Api/Dockerfile
@@ -11,7 +11,7 @@ services:
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/tasks.db
       #- JwtSettings__Key=${JWT_SIGNING_KEY}
     volumes:
-      - ./data:/app/data
+      - tasks-data:/app/data
 
   # tasks-ui:
   #   image: tasks-ui:latest
@@ -22,3 +22,6 @@ services:
   #     - "5173:5173"
   #   depends_on:
   #     - tasks-api
+
+volumes:
+  tasks-data:

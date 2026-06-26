@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/Solution Items/">
-    <File Path="docker-compose.yml" />
     <File Path="README.md" />
   </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
   <Project Path="src/Tasks.Api/Tasks.Api.csproj" />
 </Solution>

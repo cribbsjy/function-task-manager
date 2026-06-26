@@ -3,8 +3,7 @@ using Tasks.Api.Domain;
 
 namespace Tasks.Api.Repository;
 
-public class TasksDbContext : DbContext
+public class TasksDbContext(DbContextOptions<TasksDbContext> options) : DbContext(options)
 {
-    public TasksDbContext(DbContextOptions<TasksDbContext> options) : base(options) { }
     public DbSet<TaskEntity> Tasks => Set<TaskEntity>();
 }
