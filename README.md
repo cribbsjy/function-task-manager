@@ -22,6 +22,7 @@ A simple task management engine.
 * Tasks can be created, updated via inline forms, filtered by status tabs, and deleted.
 * Basic input validation
 * Simple user profile simulation is executed using an `X-User-Id` application context. Every database operation is scoped behind this boundary, guaranteeing User A cannot read, edit, or delete any item belonging to User B.
+* Soft-deleting tasks until required to hard-delete
 
 ---
 
@@ -38,6 +39,7 @@ A simple task management engine.
 1. **Transactional Domain Events:** Implement an outbox table within the SQLite database to capture state changes, preparing the app to dispatch events asynchronously to an external system.
 2. **Optimistic Concurrency Resolution:** Add a version row index to the task table to ensure web application changes gracefully catch and warn users if two browser windows modify an entity simultaneously.
 3. **Transport Layer Security (TLS/HTTPS):**
+4. Optionally get deleted tasks
 
 ---
 

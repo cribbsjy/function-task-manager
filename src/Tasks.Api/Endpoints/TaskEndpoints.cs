@@ -13,6 +13,8 @@ public static class TaskEndpoints
 {
     private const string GetTasks = "GetTasks";
     private const string CreateTask = "CreateTask";
+    private const string UpdateTask = "UpdateTask";
+    private const string DeleteTask = "Delete";
 
     public static IEndpointRouteBuilder MapV1TaskEndpoints(this IEndpointRouteBuilder builder)
     {
@@ -55,7 +57,7 @@ public static class TaskEndpoints
             TasksDbContext db,
             CancellationToken cancellationToken) =>
         {
-            var task = await db.Tasks.FindAsync(new object[] { id }, cancellationToken);
+            var task = await db.Tasks.FindAsync([id], cancellationToken);
             if (task is null)
             {
                 return Results.NotFound(new { Message = $"Task with ID {id} not found." });
@@ -67,10 +69,30 @@ public static class TaskEndpoints
             task.LastUpdatedAt = DateTimeOffset.UtcNow;
 
             await db.SaveChangesAsync(cancellationToken);
+            return Results.Ok();
+        })
+            .WithName(UpdateTask)
+            .Produces<Ok>()
+            .Produces<NotFound>();
+
+        endpointsGroup.MapDelete("/{id:guid}", async (
+            Guid id,
+            TasksDbContext db,
+            CancellationToken cancellationToken) =>
+        {
+            var task = await db.Tasks.FindAsync([id], cancellationToken);
+            if (task is null)
+            {
+                return Results.NotFound(new { Message = $"Task with ID {id} not found." });
+            }
+
+            task.DeletedAt = DateTimeOffset.UtcNow;
+
+            await db.SaveChangesAsync(cancellationToken);
             return Results.NoContent();
         })
-            .WithName("UpdateTask")
-            .Produces<Ok>()
+            .WithName(DeleteTask)
+            .Produces<NoContent>()
             .Produces<NotFound>();
 
         endpointsGroup.AddEndpointFilterFactory(ValidationFilter.ValidationFilterFactory);
