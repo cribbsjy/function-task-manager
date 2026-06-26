@@ -1,0 +1,27 @@
+services:
+  tasks-api:
+    image: tasks-api:latest
+    build:
+      context: .
+      dockerfile: ./src/Tasks.Api/Dockerfile
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/tasks.db
+      #- JwtSettings__Key=${JWT_SIGNING_KEY}
+    volumes:
+      - tasks-data:/app/data
+
+  # tasks-ui:
+  #   image: tasks-ui:latest
+  #   build:
+  #     context: .
+  #     dockerfile: src/tasks-ui/Dockerfile
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - tasks-api
+
+volumes:
+  tasks-data:

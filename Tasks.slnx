@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="src/Tasks.Api/Tasks.Api.csproj" />
+  <Project Path="tests/TaskTests/TaskTests.csproj" Id="21badb76-3582-4cf8-9077-e8efa93fba3d" />
+</Solution>
