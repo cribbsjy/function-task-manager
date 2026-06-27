@@ -4,6 +4,12 @@ A simple task management engine.
 
 ## 1. Quick Start
 
+### Prerequisites
+Before running the application, ensure you have the following local runtimes installed:
+*   **Docker Desktop**
+*   **Node.js** (v18 or higher)
+*   **.NET SDK** (v10.0 or higher)
+
 ### Backend (Port 5001)
 1. Navigate to the solution root
 2. Build the container `docker compose build --no-cache`
@@ -68,6 +74,7 @@ Docker aggressively caches layer states during the multi-stage build process. If
 * **Example:** `error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist...`
 * **Resolution:** Clear the Docker build cache to force a clean file restore:
   ```bash
+  rm -rf ./data
   docker builder prune -f
   docker compose up --build
   ```
