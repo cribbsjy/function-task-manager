@@ -13,3 +13,8 @@ export interface Task {
     createdAt: string;
     dueDate: string | null;
 }
+export interface CreateTaskRequest {
+    title: string;
+    description: string;
+    dueDate: string;
+}

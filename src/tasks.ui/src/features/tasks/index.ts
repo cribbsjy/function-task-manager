@@ -1,3 +1,3 @@
-export { default as TaskBoard } from './components/TaskBoard';
+export { default as TaskDashboard } from './components/TaskDashboard';
 export * from './hooks/useTasks';
 export * from './types';
