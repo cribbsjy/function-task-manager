@@ -22,6 +22,7 @@ public static class AuthEndpoints
         {
             var testUsers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
+                { "string", "string" },
                 { "UserA", "passwordA" },
                 { "UserB", "passwordB" }
             };
