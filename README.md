@@ -58,6 +58,7 @@ Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenti
 
 1. **Frontend Polish:** Improved UI/UX, like Drag-and-Drop for task status
 2. **Robust Automated Testing:** Playwright test for end-to-end testing
+3. **CI/CD Pipeline**
 
 ---
 
