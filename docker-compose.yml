@@ -14,13 +14,3 @@ services:
       - JwtSettings__Audience=TasksUi
     volumes:
       - ./data:/app/data
-
-  # tasks-ui:
-  #   image: tasks-ui:latest
-  #   build:
-  #     context: .
-  #     dockerfile: src/tasks-ui/Dockerfile
-  #   ports:
-  #     - "5173:5173"
-  #   depends_on:
-  #     - tasks-api

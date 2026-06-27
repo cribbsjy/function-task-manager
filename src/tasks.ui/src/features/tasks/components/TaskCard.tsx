@@ -25,6 +25,7 @@ export default function TaskCard({ task }: TaskCardProps): React.JSX.Element {
     const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
 
     const todayString = new Date().toISOString().split('T')[0];
+    const maxDateString = "9999-12-31";
 
     const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const nextStatus = Number(e.target.value) as TaskStatus;
@@ -37,22 +38,19 @@ export default function TaskCard({ task }: TaskCardProps): React.JSX.Element {
         e.preventDefault();
         const errors: FormErrors = {};
 
-        if (!editTitle.trim()) {
-            errors.title = "Title is required.";
-        } else if (editTitle.length > 100) {
-            errors.title = "Title cannot exceed 100 characters.";
-        }
-
-        if (!editDescription.trim()) {
-            errors.description = "Description is required.";
-        } else if (editDescription.length > 500) {
-            errors.description = "Description cannot exceed 500 characters.";
-        }
+        // Convert strings to numeric timestamps for clean mathematical comparison
+        const selectedTime = new Date(`${editDueDate}T00:00:00Z`).getTime();
+        const todayTime = new Date(`${todayString}T00:00:00Z`).getTime();
+        const maxDateTime = new Date(`${maxDateString}T00:00:00Z`).getTime();
 
         if (!editDueDate) {
             errors.dueDate = "Due date is required.";
-        } else if (editDueDate < todayString) {
+        } else if (isNaN(selectedTime)) {
+            errors.dueDate = "Please enter a valid date.";
+        } else if (selectedTime < todayTime) {
             errors.dueDate = "Due date cannot be in the past.";
+        } else if (selectedTime > maxDateTime) {
+            errors.dueDate = "Due date cannot exceed 12/31/9999.";
         }
 
         if (Object.keys(errors).length > 0) {
@@ -129,6 +127,7 @@ export default function TaskCard({ task }: TaskCardProps): React.JSX.Element {
                         <input
                             type="date"
                             value={editDueDate}
+                            min={new Date().toISOString().split('T')[0]}
                             onChange={(e) => setEditDueDate(e.target.value)}
                             style={{ width: '100%', padding: '4px', fontSize: '0.9rem', borderColor: fieldErrors.dueDate ? '#ef4444' : undefined }}
                         />

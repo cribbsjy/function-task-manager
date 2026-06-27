@@ -21,19 +21,20 @@ string | string
 UserA | passwordA
 UserB | passwordB
 
-Users must obtain a `Bearer token` via the `/auth/login` endpoint
+Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenticating using the Swagger UI, ensure the word Bearer  is supplied before your token string to avoid 401: Unauthorized rejections.
 
 ### Frontend (Port 5173)
-1. Navigate to `src/tasks-ui`
+1. Navigate to `src/tasks.ui`
 2. Execute: `npm install && npm run dev`
+3. Open your browser to http://localhost:51218.
 
 ---
 
 ## 2. Intentionally Scoped Features & Guardrails
 
-* Tasks can be created, updated via inline forms, filtered by status tabs, and deleted.
-* Basic input validation
-* Simple user profile simulation is executed using an `X-User-Id` application context. Every database operation is scoped behind this boundary, guaranteeing User A cannot read, edit, or delete any item belonging to User B.
+* **Optimistic UI Updates:** Task status adjustments, modifications, and deletions update the UI layout instantaneously using TanStack Query. The cache rolls back automatically behind the scenes to preserve data integrity if an API network or server error occurs.
+* **Input Validation:** Both frontend and backend input validation for task fields
+* **Test Users:** Simple, hardcoded user management that limits access to data based on UserId
 * Soft-deleting tasks until required to hard-delete
 
 ---
@@ -43,15 +44,14 @@ Users must obtain a `Bearer token` via the `/auth/login` endpoint
 * **Local Network Transport (HTTP vs. HTTPS):** The local Docker environment intentionally routes traffic over plain HTTP (`http://localhost:5001`).
 * **Identity Management:** Fully integrated third-party identity authentication was omitted to focus on structural validation and end-to-end functionality within the timeframe.
 * **Elaborate Architecture Layers (CQRS/MediatR/Repositories):** This application utilizes a single API project structure where Minimal API endpoints route straight into the Entity Framework database context. Splitting this into multiple abstraction projects for four endpoints would represent a misalignment of architectural complexity to the scope of this request.
-* **Administration Features** User management, deleted task visibility
+* **Administration Features** User management and deleted task visibility are omitted from the current MVP scope.
 
 ---
 
 ## 4. Engineering Backlog
 
-1. **Transactional Domain Events:** Implement an outbox table within the SQLite database to capture state changes, preparing the app to dispatch events asynchronously to an external system.
-2. **Optimistic Concurrency Resolution:** Add a version row index to the task table to ensure web application changes gracefully catch and warn users if two browser windows modify an entity simultaneously.
-3. **Frontend Polish** Proper UI and UX must be implemented
+1. **Frontend Polish:** Improved UI/UX, like Drag-and-Drop for task status
+2. **Robust Automated Testing:** Playwright test for end-to-end testing
 
 ---
 
