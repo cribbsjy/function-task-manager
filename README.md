@@ -42,6 +42,7 @@ Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenti
 * **Input Validation:** Both frontend and backend input validation for task fields
 * **Test Users:** Simple, hardcoded user management that limits access to data based on UserId
 * Soft-deleting tasks until required to hard-delete
+* **Frontend Console Errors:** API errors render in the browser console
 
 ---
 
@@ -56,7 +57,7 @@ Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenti
 
 ## 4. Engineering Backlog
 
-1. **Frontend Polish:** Improved UI/UX, like Drag-and-Drop for task status
+1. **Frontend Polish:** Improved UI/UX, like Drag-and-Drop for task status. Toast messages when API error occurs.
 2. **Robust Automated Testing:** Playwright test for end-to-end testing
 3. **CI/CD Pipeline**
 
