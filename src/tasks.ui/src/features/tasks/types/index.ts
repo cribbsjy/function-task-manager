@@ -1,8 +1,8 @@
 export enum TaskStatus {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-    Deleted = 3
+    New = 1,
+    InProgress = 2,
+    Completed = 3,
+    Deleted = 4
 }
 
 export interface Task {

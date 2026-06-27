@@ -14,7 +14,7 @@ public record TaskEntity
 
     // Calculated helper values
     public bool IsCompleted => Status == Status.Completed;
-    public bool IsDeleted => DeletedAt is not null;
+    public bool IsDeleted => Status == Status.Deleted;
 }
 
 public enum Status
@@ -22,5 +22,6 @@ public enum Status
     Unknown = 0,
     New,
     InProgress,
-    Completed
+    Completed,
+    Deleted
 }

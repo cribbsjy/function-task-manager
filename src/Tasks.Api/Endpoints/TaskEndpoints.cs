@@ -88,6 +88,7 @@ public static class TaskEndpoints
                 return Results.NotFound(new { Message = $"Task with ID {id} not found." });
             }
 
+            task.Status = Status.Deleted;
             task.DeletedAt = DateTimeOffset.UtcNow;
 
             await db.SaveChangesAsync(cancellationToken);

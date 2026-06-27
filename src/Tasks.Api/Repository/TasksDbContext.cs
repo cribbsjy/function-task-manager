@@ -17,7 +17,7 @@ public class TasksDbContext(DbContextOptions<TasksDbContext> options, ICurrentUs
 
         // Only fetch records belonging to the current user and not soft-deleted
         modelBuilder.Entity<TaskEntity>()
-            .HasQueryFilter(t => t.DeletedAt == null && t.UserId == _currentUser.UserId);
+            .HasQueryFilter(t => t.Status != Status.Deleted && t.UserId == _currentUser.UserId);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

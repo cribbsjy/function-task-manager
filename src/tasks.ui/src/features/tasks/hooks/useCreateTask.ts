@@ -36,7 +36,7 @@ export const useCreateTask = () => {
             if (context?.previousTasks) {
                 queryClient.setQueryData(['tasks'], context.previousTasks);
             }
-            console.error('Failed to save task. Rolling back changes.', err);
+            console.error('Failed to save task.', err);
         },
 
         onSettled: () => {
