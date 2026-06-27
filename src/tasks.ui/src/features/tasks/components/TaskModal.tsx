@@ -17,7 +17,7 @@ export default function TaskModal({ onClose, onCreate, isSubmitting }: TaskModal
         onCreate({
             title,
             description,
-            dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+            dueDate: dueDate,
         });
     };
 

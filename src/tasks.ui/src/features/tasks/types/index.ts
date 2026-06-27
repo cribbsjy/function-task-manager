@@ -11,7 +11,7 @@ export interface Task {
     description: string;
     status: TaskStatus;
     createdAt: string;
-    dueDate: string | null;
+    dueDate: string;
 }
 export interface CreateTaskRequest {
     title: string;

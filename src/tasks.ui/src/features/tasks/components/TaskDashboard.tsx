@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TaskBoard from './TaskBoard';
 import TaskModal from './TaskModal';
+import { useCreateTask } from '../hooks/useCreateTask';
 import type { CreateTaskRequest } from '../types';
 
 interface TaskDashboardProps {
@@ -10,9 +11,14 @@ interface TaskDashboardProps {
 export default function TaskDashboard({ onLogout }: TaskDashboardProps): React.JSX.Element {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+    const { mutate: createTaskMutation, isPending } = useCreateTask();
+
     const handleCreateTask = (data: CreateTaskRequest) => {
-        console.log("Will handle with TanStack Optimistic Updates next:", data);
-        setIsModalOpen(false);
+        createTaskMutation(data, {
+            onSuccess: () => {
+                setIsModalOpen(false);
+            }
+        });
     };
 
     return (
@@ -35,7 +41,7 @@ export default function TaskDashboard({ onLogout }: TaskDashboardProps): React.J
                 <TaskModal
                     onClose={() => setIsModalOpen(false)}
                     onCreate={handleCreateTask}
-                    isSubmitting={false}
+                    isSubmitting={isPending}
                 />
             )}
         </div>
