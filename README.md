@@ -29,7 +29,7 @@ UserB | passwordB
 
 Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenticating using the Swagger UI, ensure the word Bearer  is supplied before your token string to avoid 401: Unauthorized rejections.
 
-### Frontend (Port 5173)
+### Frontend (Port 51218)
 1. Navigate to `src/tasks.ui`
 2. Execute: `npm install && npm run dev`
 3. Open your browser to http://localhost:51218.
