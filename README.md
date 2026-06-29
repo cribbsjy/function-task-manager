@@ -51,7 +51,8 @@ Users must obtain a `Bearer token` via the `/auth/login` endpoint. When authenti
 * **Local Network Transport (HTTP vs. HTTPS):** The local Docker environment intentionally routes traffic over plain HTTP (`http://localhost:5001`).
 * **Identity Management:** Fully integrated third-party identity authentication was omitted to focus on structural validation and end-to-end functionality within the timeframe.
 * **Elaborate Architecture Layers (CQRS/MediatR/Repositories):** This application utilizes a single API project structure where Minimal API endpoints route straight into the Entity Framework database context. Splitting this into multiple abstraction projects for four endpoints would represent a misalignment of architectural complexity to the scope of this request.
-* **Administration Features** User management and deleted task visibility are omitted from the current MVP scope.
+* **Administration Features:** User management and deleted task visibility are omitted from the current MVP scope.
+* **I18N:** Thorough audit for Internationalization and Localization. Currently limited to Timestamps in UTC.
 
 ---
 
