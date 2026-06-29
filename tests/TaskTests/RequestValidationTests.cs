@@ -26,7 +26,7 @@ public class TaskValidatorTests
         {
             Title = "Finish Homework",
             Description = "Complete calculus assignment.",
-            DueDate = _faker.Date.FutureDateOnly()
+            DueDate = GetFutureDateString()
         };
 
         // Act
@@ -75,7 +75,7 @@ public class TaskValidatorTests
             Title = "Valid Title",
             Description = "Valid description",
             Status = (Status)999, // Out-of-bounds enum value
-            DueDate = _faker.Date.FutureDateOnly()
+            DueDate = GetFutureDateString()
         };
 
         // Act
@@ -85,8 +85,11 @@ public class TaskValidatorTests
         result.ShouldHaveValidationErrorFor(t => t.Status);
     }
 
-    [Fact]
-    public void UpdateValidator_ShouldFail_WhenDueDateInPast()
+    [Theory]
+    [InlineData("")]
+    [InlineData("asdf")]
+    [InlineData("2000-01-01")]
+    public void UpdateValidator_ShouldFail_WhenInvalidDueDate(string dueDate)
     {
         // Arrange
         var request = new UpdateTaskRequest
@@ -94,7 +97,7 @@ public class TaskValidatorTests
             Title = "Valid Title",
             Description = "Valid description",
             Status = (Status)1,
-            DueDate = _faker.Date.PastDateOnly()
+            DueDate = dueDate
         };
 
         // Act
@@ -103,4 +106,7 @@ public class TaskValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(t => t.DueDate);
     }
+
+    private string GetFutureDateString() =>
+        _faker.Date.FutureDateOnly().ToString("yyyy-MM-dd"); // faker uses a mm/dd/yyyy format
 }
