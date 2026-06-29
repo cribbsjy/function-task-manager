@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Tasks.Api.Domain;
 using Tasks.Api.Endpoints.Requests;
 using Tasks.Api.Endpoints.Validation;
+using Tasks.Api.Extensions;
 using Tasks.Api.Repository;
 
 namespace Tasks.Api.Endpoints;
@@ -39,7 +40,7 @@ public static class TaskEndpoints
                 Title = request.Title?.Trim(),
                 Description = request.Description?.Trim(),
                 Status = Status.New,
-                DueDate = request.DueDate,
+                DueDate = request.DueDate.ToDateOnly(),
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -68,7 +69,7 @@ public static class TaskEndpoints
             task.Description = request.Description?.Trim();
             task.Status = request.Status;
             task.LastUpdatedAt = DateTimeOffset.UtcNow;
-            task.DueDate = request.DueDate;
+            task.DueDate = request.DueDate.ToDateOnly();
 
             await db.SaveChangesAsync(cancellationToken);
             return Results.Ok();
